@@ -125,7 +125,7 @@ int main(void) {
     base_addr = 8UL * 1024UL * ALLOCATOR_AREA_SIZE;
     size = 2 * ALLOCATOR_AREA_SIZE + BITMAP_SIZE;
     area = (uint8_t *)mmap((void *)base_addr, size, PROT_READ | PROT_WRITE,
-                           MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED_NOREPLACE,
+                           MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED,
                            -1, 0);
     if (area == MAP_FAILED) {
         perror("mmap failed");
