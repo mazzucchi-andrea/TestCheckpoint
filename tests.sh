@@ -1,10 +1,10 @@
 #!/bin/bash
 
-declare -a cache_flush=(0 1)
-declare -a ops=(1000 10000 100000 1000000)
-declare -a size=(0x100000 0x200000 0x400000)
-declare -a mods=(8 16 32 64)
-declare -a chunks=(32 64 128 256 512 1024 2048 4096)
+declare -a cache_flush=(0)
+declare -a ops=(1000)
+declare -a size=(0x100000 0x400000)
+declare -a mods=(16 32 256)
+declare -a chunks=(32 256)
 declare -a writes=(0.95 0.90 0.85 0.80 0.75 0.70 0.65 0.60 0.55 0.50 0.45 0.40 0.35 0.30)
 
 # --- Error Checking ---
@@ -12,6 +12,19 @@ if ! command -v bc &> /dev/null
 then
     echo "Error: bc could not be found."
     echo "Please install bc to run this script."
+    exit 1
+fi
+
+if ! command -v gnuplot &> /dev/null
+then
+    echo "Error: Gnuplot could not be found."
+    echo "Please install gnuplot to run this script."
+    exit 1
+fi
+
+if [ ! -f "plot.gp" ]; then
+    echo "Error: Gnuplot template 'plot.gp' not found!"
+    echo "Please make sure it's in the same directory as this script."
     exit 1
 fi
 
@@ -77,4 +90,28 @@ done
 make clean
 cd ..
 
-sh generate_plots.sh
+rm -r plots
+mkdir plots
+
+gcc -O3 get_data.c -o get_plot_data
+
+for chunk in ${chunks[@]}
+do
+    for mod in ${mods[@]};
+    do
+        for s in ${size[@]};
+        do
+            for cf in ${cache_flush[@]};
+            do
+                for o in ${ops[@]}; 
+                do
+                    ./get_plot_data $s $cf $mod $chunk $o 
+                    gnuplot plot.gp
+                done
+            done
+        done
+    done
+done
+
+rm get_plot_data
+rm plot_data.csv

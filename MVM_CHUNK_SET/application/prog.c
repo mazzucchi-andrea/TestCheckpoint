@@ -56,7 +56,7 @@ double test_checkpoint(uint8_t *area, int64_t value) {
 
 double test_checkpoint_repeat(uint8_t *area, int64_t value, int rep) {
     int offset;
-    __attribute__((unused)) int64_t read_value;
+    int64_t read_value;
     clock_t begin, end;
 
     begin = clock();
@@ -164,12 +164,11 @@ int main(void) {
         return errno;
     }
 
-    for (int r = 2; r <= 10; r += 2) {
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 1000; i++) {
 #if CF == 1
             clean_cache(area);
 #endif
-            ckpt_samples[i] = test_checkpoint_repeat(area, value, r);
+            ckpt_samples[i] = test_checkpoint_repeat(area, value, 10);
 #if CF == 1
             clean_cache(area);
 #endif
@@ -182,8 +181,7 @@ int main(void) {
         mean_ci_95(restore_samples, &restore_mean, &restore_ci);
         fprintf(file, "0x%x,%d,%d,%d,%d,%d,%d,%.20f,%.20f,%.20f,%.20f\n",
                 ALLOCATOR_AREA_SIZE, CF, CHUNK, WRITES + READS, WRITES, READS,
-                r, ckpt_mean, ckpt_ci, restore_mean, restore_ci);
-    }
+                10, ckpt_mean, ckpt_ci, restore_mean, restore_ci);
     fclose(file);
 
     return EXIT_SUCCESS;
