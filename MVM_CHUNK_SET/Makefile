@@ -10,7 +10,6 @@ TARGET_MODULES= prog.c
 TARGET_FUNCTIONS="<test_checkpoint>:","<test_checkpoint_repeat>:"
 LIBS = -lm
 
-
 INCLUDE = $(PWD)/include
 OBJ = $(PWD)/obj
 LIB = $(PWD)/lib
@@ -36,6 +35,7 @@ UDTEMPOBJ = -Duser_defined_temp_obj_file=\"$(USER_DEFINED)/$(USER_DEFINED_OBJ_FI
 SECURITY_FLAGS = -pie -fPIE -fstack-protector-all
 
 ADDITIONAL_FLAGS = -O3 -DASM_PREAMBLE -DAPPLY_PATCHES #-DVERBOSE
+
 #NOTE: 
 #the ASM_PREAMBLE macro enables building a demo patch for each memory access instruction
 #which passess control to a trampoline that calls the the_patch(...) fuction
@@ -60,11 +60,13 @@ compile-and-link: movm
 
 checks:
 	@if [ -d $(APP) ]; then echo ""; else echo "application directory does not exist" ; exit 1; fi
-	@./scripts/file-existence $(APP) $(TARGET_MODULES)
+	@./scripts/file-existence.sh $(APP) $(TARGET_MODULES)
 	@echo "PLEASE for any compiling error run 'make restore-files'\n"
 
 	@if [ ! -d $(OBJ) ]; then mkdir -p $(OBJ); fi
 	@if [ ! -d $(LIB) ]; then mkdir -p $(LIB); fi
+	@if [ ! -d $(TEMP) ]; then mkdir -p $(TEMP); fi
+	@if [ ! -d $(TEMP)/$(SHADOW) ]; then mkdir -p $(TEMP)/$(SHADOW); fi
 
 base:
 	./scripts/temp-dir.sh $(TEMP) $(TEMP)/$(INTERMEDIATEFILE)
@@ -80,7 +82,6 @@ asm-patch:
 
 patch:
 	cd ./patches; gcc patches.c -c -I$(INCLUDE) $(THE_VM) $(UDTEMPDIR) $(UDTEMPFILE) $(UDTEMPOBJ) $(SECURITY_FLAGS) $(ADDITIONAL_FLAGS) -o $(OBJ)/_patches.o
-#please rember to insert whatever Makefile in the user-defined directory
 	cd $(USER_DEFINED); make
 
 movm: base head startup asm-patch patch 
