@@ -3,8 +3,8 @@
 declare -a cache_flush=(0)
 declare -a ops=(1000)
 declare -a size=(0x100000 0x400000)
-declare -a mods=(16 32 256)
-declare -a chunks=(32 256)
+declare -a mods=(8 16 32 64)
+declare -a chunks=(32 64 128 256)
 declare -a writes=(0.95 0.90 0.85 0.80 0.75 0.70 0.65 0.60 0.55 0.50 0.45 0.40 0.35 0.30)
 
 # --- Error Checking ---
@@ -28,8 +28,8 @@ if [ ! -f "plot.gp" ]; then
     exit 1
 fi
 
-# Tests with MVM_GRID_CKPT_BS
-cd MVM_GRID_CKPT_BS
+# Tests with MVM_GRID_CKPT
+cd MVM_GRID_CKPT_SAVE
 rm ckpt_test_results.csv
 rm ckpt_repeat_test_results.csv
 echo "size,cache_flush,mod,ops,writes,reads,ckpt_time,ckpt_ci,restore_time,restore_ci" > ckpt_test_results.csv
@@ -60,7 +60,7 @@ make clean
 cd ..
 
 # Tests with MVM chunk patch
-cd MVM_CHUNK_SET
+cd MVM_CHUNK_CKPT_SAVE
 rm chunk_test_results.csv
 rm chunk_repeat_test_results.csv
 echo "size,cache_flush,chunk,ops,writes,reads,ckpt_time,ckpt_ci,restore_time,restore_ci" > chunk_test_results.csv

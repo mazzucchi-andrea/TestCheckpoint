@@ -109,12 +109,12 @@ int main(int argc, char *argv[]) {
            "%d; Ops: %d\n",
            size, cache_flush, mod, chunk_size, ops);
 
-    grid_ckpt_file = fopen("MVM_GRID_CKPT_BS/ckpt_test_results.csv", "r");
-    chunk_ckpt_file = fopen("MVM_CHUNK_SET/chunk_test_results.csv", "r");
+    grid_ckpt_file = fopen("MVM_GRID_CKPT_SAVE/ckpt_test_results.csv", "r");
+    chunk_ckpt_file = fopen("MVM_CHUNK_CKPT_SAVE/chunk_test_results.csv", "r");
     grid_ckpt_rep_file =
-        fopen("MVM_GRID_CKPT_BS/ckpt_repeat_test_results.csv", "r");
+        fopen("MVM_GRID_CKPT_SAVE/ckpt_repeat_test_results.csv", "r");
     chunk_ckpt_rep_file =
-        fopen("MVM_CHUNK_SET/chunk_repeat_test_results.csv", "r");
+        fopen("MVM_CHUNK_CKPT_SAVE/chunk_repeat_test_results.csv", "r");
     output_file = fopen("plot_data.csv", "w");
 
     if (!chunk_ckpt_file || !grid_ckpt_file || !output_file) {
