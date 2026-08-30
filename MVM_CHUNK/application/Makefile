@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: 2026 Andrea Mazzucchi <andrea.mazzucchi@tutamail.com>
+# SPDX-FileCopyrightText: 2026 Francesco Quaglia <francesco.quaglia@uniroma2.it>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+ALLOCATOR_AREA_SIZE=0x100000
+WRITES=950
+READS=50
+CHUNK=32
+CF=0
+
+all:
+	gcc -c ckpt.c -O3 -mavx -mavx2 -mavx512f -pie -fPIE -fstack-protector-all -DALLOCATOR_AREA_SIZE=$(ALLOCATOR_AREA_SIZE) -DCHUNK=$(CHUNK)
+	gcc -c prog.c -funroll-loops -pie -fPIE -fstack-protector-all -I ./ -I ../include -DALLOCATOR_AREA_SIZE=$(ALLOCATOR_AREA_SIZE) -DWRITES=$(WRITES) -DREADS=$(READS) -DCF=$(CF) -DCHUNK=$(CHUNK) -o temp_prog.o
+	ld -r temp_prog.o ckpt.o -o prog.o

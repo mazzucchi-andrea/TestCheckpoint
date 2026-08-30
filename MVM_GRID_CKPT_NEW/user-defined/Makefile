@@ -3,15 +3,9 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-# .clang-format
+#this Makefile is just for builfing user-defined stuff if any
+#if you do no need please leave ut siply with an idempotent 
+# "all" command
 
-Language: C
-BasedOnStyle: LLVM
-
-IndentWidth: 4
-ColumnLimit: 80
-
-InsertBraces: true
-
-PointerAlignment: Left
-DerivePointerAlignment: false
+all:
+	gcc translate-to-binary.c -o translate-to-binary

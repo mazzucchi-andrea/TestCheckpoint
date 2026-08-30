@@ -3,15 +3,4 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-# .clang-format
-
-Language: C
-BasedOnStyle: LLVM
-
-IndentWidth: 4
-ColumnLimit: 80
-
-InsertBraces: true
-
-PointerAlignment: Left
-DerivePointerAlignment: false
+objdump -D $1 | awk -F 'm' '{print $1}' | awk '{$1=""; sub(/^ /, ""); print}' | sed '0,/text/d' | ./translate-to-binary 
