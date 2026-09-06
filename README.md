@@ -6,7 +6,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 -->
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) 
-[![REUSE status](https://api.reuse.software/badge/github.com/applejag/kubectl-klock)](https://api.reuse.software/info/github.com/applejag/kubectl-klock)
+[![REUSE status](https://api.reuse.software/badge/github.com/mazzucchi-andrea/Checkpoint)](https://api.reuse.software/info/github.com/mazzucchi-andrea/Checkpoint)
 
 # MVM Checkpoint/Restore Benchmarks
 
